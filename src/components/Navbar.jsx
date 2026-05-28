@@ -50,31 +50,9 @@ export default function Navbar() {
             </a>
             <div className="dropdown-menu">
               <a className="dropdown-item" href="#">Sobre nós</a>
-              <a className="dropdown-item" href="#">Projetos sociais</a>
-            </div>
-          </li>
-
-          <li className="nav-item">
-            <a className="nav-link" href="#">Ongs parceiras</a>
-          </li>
-
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-toggle="dropdown"
-            >
-              FAQ
-            </a>
-            <div className="dropdown-menu">
-              <a className="dropdown-item" href="#">Como ajudar</a>
             </div>
           </li>
         </ul>
-
-        <a href="#"><button type="button" className="btn btn-outline-info mr-1">Quero adotar</button></a>
-        <a href="#"><button type="button" className="btn btn-outline-warning mr-2">Seja voluntário</button></a>
 
         {user && (
           <div className="d-flex align-items-center">

@@ -5,7 +5,7 @@ const AuthContext = createContext(null);
 const KEY_SESSION = "petco_session";
 const KEY_USERS   = "petco_users";
 
-// Garante que o admin padrão existe ao iniciar
+
 function initUsers() {
   if (!localStorage.getItem(KEY_USERS)) {
     localStorage.setItem(KEY_USERS, JSON.stringify([

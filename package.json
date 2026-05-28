@@ -1,5 +1,6 @@
 {
-  "name": "cafofo-dos-peludos",
+  "name": "petco-sistema-login",
+  "description": "Sistema de Login da Pet&Co.",
   "private": true,
   "version": "1.0.0",
   "type": "module",
