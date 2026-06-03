@@ -1,3 +1,5 @@
+import ListarAnimais from "./pages/Animais/ListarAnimais";
+import FormAnimal from "./pages/Animais/FormAnimal";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
@@ -10,11 +12,9 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Rotas públicas */}
-          <Route path="/login"    element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
 
-          {/* Rota protegida — redireciona para /login se não autenticado */}
           <Route
             path="/painel"
             element={
@@ -24,7 +24,19 @@ export default function App() {
             }
           />
 
-          {/* Qualquer outra rota vai para o painel (PrivateRoute trata o login) */}
+          <Route
+            path="/animais"
+            element={<PrivateRoute><ListarAnimais /></PrivateRoute>}
+          />
+          <Route
+            path="/animais/novo"
+            element={<PrivateRoute><FormAnimal /></PrivateRoute>}
+          />
+          <Route
+            path="/animais/editar/:id"
+            element={<PrivateRoute><FormAnimal /></PrivateRoute>}
+          />
+
           <Route path="*" element={<Navigate to="/painel" replace />} />
         </Routes>
       </BrowserRouter>
