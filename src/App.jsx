@@ -3,6 +3,9 @@ import FormAnimal from "./pages/Animais/FormAnimal";
 // Importações das novas páginas de Produtos
 import ListarProdutos from "./pages/Produtos/ListarProdutos";
 import FormProduto from "./pages/Produtos/FormProduto";
+// Importações das novas páginas de Clientes
+import ListarClientes from "./pages/Clientes/ListarClientes";
+import FormCliente from "./pages/Clientes/FormCliente";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
@@ -56,6 +59,20 @@ export default function App() {
           <Route
             path="/produtos/editar/:id"
             element={<PrivateRoute><FormProduto /></PrivateRoute>}
+          />
+
+          {/* Rotas protegidas dos Clientes (CRUD 3) */}
+          <Route
+            path="/clientes"
+            element={<PrivateRoute><ListarClientes /></PrivateRoute>}
+          />
+          <Route
+            path="/clientes/novo"
+            element={<PrivateRoute><FormCliente /></PrivateRoute>}
+          />
+          <Route
+            path="/clientes/editar/:id"
+            element={<PrivateRoute><FormCliente /></PrivateRoute>}
           />
 
           {/* Qualquer outra rota vai para o painel (PrivateRoute trata o login) */}
