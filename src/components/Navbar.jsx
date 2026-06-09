@@ -12,13 +12,14 @@ export default function Navbar() {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand d-flex align-items-center" href="#" style={{ textDecoration: "none" }}>
+      <a className="navbar-brand d-flex align-items-center" href="/painel" style={{ textDecoration: "none" }}>
         <div style={{
           width: 42, height: 42, borderRadius: "50%",
           backgroundColor: "rgb(235, 167, 104)",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: "1.3rem", marginRight: 8, flexShrink: 0
-        }}>🐾</div>
+        }}
+        >🐾</div>
         <div style={{ lineHeight: 1.1 }}>
           <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "rgb(235, 167, 104)" }}>Pet&amp;Co.</div>
           <div style={{ fontSize: "0.62rem", color: "#888", textTransform: "uppercase", letterSpacing: "0.3px" }}>Adoção responsável</div>
@@ -73,8 +74,8 @@ export default function Navbar() {
           </li>
         </ul>
 
-        <a href="#"><button type="button" className="btn btn-outline-info mr-1">Quero adotar</button></a>
-        <a href="#"><button type="button" className="btn btn-outline-warning mr-2">Seja voluntário</button></a>
+        <a href="/animais"><button type="button" className="btn btn-outline-info mr-1">Quero adotar</button></a>
+        <a href="/clientes"><button type="button" className="btn btn-outline-warning mr-2">Seja voluntário</button></a>
 
         {user && (
           <div className="d-flex align-items-center">
