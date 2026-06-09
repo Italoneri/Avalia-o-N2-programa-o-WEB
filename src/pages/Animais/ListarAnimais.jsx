@@ -10,14 +10,15 @@ export default function ListarAnimais() {
     carregarPets();
   }, []);
 
-  function carregarPets() {
-    setPets(getPets());
+  async function carregarPets() {
+    const dados = await getPets();
+    setPets(dados);
   }
 
-  function handleDelete(id) {
+  async function handleDelete(id) {
     if (window.confirm("Tem certeza que deseja excluir este animal?")) {
-      deletePet(id);
-      carregarPets();
+      await deletePet(id);
+      await carregarPets(); 
     }
   }
 

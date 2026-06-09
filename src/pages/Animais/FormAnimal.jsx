@@ -18,10 +18,13 @@ export default function FormAnimal() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (id) {
-      const petExistente = getPetById(id);
-      if (petExistente) setForm(petExistente);
+    async function carregar() {
+      if (id) {
+        const existente = await getPetById(id);
+        if (existente) setForm(existente);
+      }
     }
+    carregar();
   }, [id]);
 
   function validate() {
@@ -37,16 +40,12 @@ export default function FormAnimal() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
-    
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs);
-      return;
-    }
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
-    savePet(form);
+    await savePet(form);
     navigate("/animais");
   }
 

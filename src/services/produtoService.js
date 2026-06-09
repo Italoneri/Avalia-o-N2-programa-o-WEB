@@ -1,36 +1,31 @@
-const PRODUTOS_KEY = "petco_produtos";
+import { supabase } from "./supabaseClient";
 
-export function getProdutos() {
-  const produtos = localStorage.getItem(PRODUTOS_KEY);
-  return produtos ? JSON.parse(produtos) : [];
+export async function getProdutos() {
+  const { data, error } = await supabase.from('produtos').select('*');
+  if (error) { console.error("Erro produtos:", error); return []; }
+  return data;
 }
 
-export function getProdutoById(id) {
-  const produtos = getProdutos();
-  return produtos.find(p => p.id === Number(id));
+export async function getProdutoById(id) {
+  const { data, error } = await supabase.from('produtos').select('*').eq('id', id).single();
+  if (error) return null;
+  return data;
 }
 
-export function saveProduto(produtoData) {
-  const produtos = getProdutos();
-  
+export async function saveProduto(produtoData) {
   if (produtoData.id) {
-    const index = produtos.findIndex(p => p.id === Number(produtoData.id));
-    if (index !== -1) {
-      produtos[index] = { ...produtos[index], ...produtoData };
-    }
+    await supabase.from('produtos').update({
+      nome: produtoData.nome, descricao: produtoData.descricao, 
+      preco: Number(produtoData.preco), estoque: Number(produtoData.estoque)
+    }).eq('id', produtoData.id);
   } else {
-    const novoProduto = { 
-      ...produtoData, 
-      id: Date.now() 
-    };
-    produtos.push(novoProduto);
+    await supabase.from('produtos').insert([{
+      nome: produtoData.nome, descricao: produtoData.descricao, 
+      preco: Number(produtoData.preco), estoque: Number(produtoData.estoque)
+    }]);
   }
-  
-  localStorage.setItem(PRODUTOS_KEY, JSON.stringify(produtos));
 }
 
-export function deleteProduto(id) {
-  const produtos = getProdutos();
-  const filtrados = produtos.filter(p => p.id !== Number(id));
-  localStorage.setItem(PRODUTOS_KEY, JSON.stringify(filtrados));
+export async function deleteProduto(id) {
+  await supabase.from('produtos').delete().eq('id', id);
 }

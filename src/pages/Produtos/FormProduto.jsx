@@ -17,10 +17,13 @@ export default function FormProduto() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (id) {
-      const produtoExistente = getProdutoById(id);
-      if (produtoExistente) setForm(produtoExistente);
+    async function carregar() {
+      if (id) {
+        const produtoExistente = await getProdutoById(id);
+        if (produtoExistente) setForm(produtoExistente);
+      }
     }
+    carregar();
   }, [id]);
 
   function validate() {
@@ -36,7 +39,7 @@ export default function FormProduto() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     
@@ -45,7 +48,7 @@ export default function FormProduto() {
       return;
     }
 
-    saveProduto(form);
+    await saveProduto(form);
     navigate("/produtos");
   }
 
@@ -66,7 +69,6 @@ export default function FormProduto() {
               name="nome"
               value={form.nome}
               onChange={handleChange}
-              placeholder="Ex: Ração Premier 15kg"
             />
             {errors.nome && <div className="invalid-feedback">{errors.nome}</div>}
           </div>
@@ -79,7 +81,6 @@ export default function FormProduto() {
               value={form.descricao}
               onChange={handleChange}
               rows="3"
-              placeholder="Detalhes do produto..."
             ></textarea>
           </div>
 
@@ -93,7 +94,6 @@ export default function FormProduto() {
                 name="preco"
                 value={form.preco}
                 onChange={handleChange}
-                placeholder="Ex: 149.90"
               />
               {errors.preco && <div className="invalid-feedback">{errors.preco}</div>}
             </div>
@@ -113,7 +113,7 @@ export default function FormProduto() {
           <div className="d-flex justify-content-between mt-4">
             <Link to="/produtos" className="btn btn-outline-secondary">Cancelar</Link>
             <button type="submit" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
-              Salvar
+              Guardar
             </button>
           </div>
         </form>

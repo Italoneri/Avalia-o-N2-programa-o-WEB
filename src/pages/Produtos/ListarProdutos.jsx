@@ -11,14 +11,15 @@ export default function ListarProdutos() {
     carregarProdutos();
   }, []);
 
-  function carregarProdutos() {
-    setProdutos(getProdutos());
+  async function carregarProdutos() {
+    const dados = await getProdutos();
+    setProdutos(dados);
   }
 
-  function handleDelete(id) {
+  async function handleDelete(id) {
     if (window.confirm("Tem certeza que deseja excluir este produto?")) {
-      deleteProduto(id);
-      carregarProdutos();
+      await deleteProduto(id);
+      await carregarProdutos();
     }
   }
 

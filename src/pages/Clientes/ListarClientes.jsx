@@ -10,25 +10,25 @@ export default function ListarClientes() {
     carregarClientes();
   }, []);
 
-  function carregarClientes() {
-    // Pegamos a lista, mas garantimos que quem não tem ID (como o Admin padrão) ganhe um ID visual
-    const lista = getClientes().map((c, index) => ({
+  async function carregarClientes() {
+    const dados = await getClientes();
+    // Mapeamento mantido para segurança da interface
+    const lista = dados.map((c, index) => ({
       ...c,
       id: c.id || `padrao-${index}` 
     }));
     setClientes(lista);
   }
 
-  function handleDelete(id) {
-    // Proteção: Não deixar excluir o admin padrão
+  async function handleDelete(id) {
     if (String(id).includes("padrao")) {
       alert("Não é possível excluir a conta de administrador padrão do sistema.");
       return;
     }
 
-    if (window.confirm("Tem certeza que deseja excluir este usuário? Ele não poderá mais fazer login.")) {
-      deleteCliente(id);
-      carregarClientes();
+    if (window.confirm("Tem certeza que deseja excluir este utilizador?")) {
+      await deleteCliente(id);
+      await carregarClientes();
     }
   }
 
@@ -55,7 +55,7 @@ export default function ListarClientes() {
           <tbody>
             {clientes.map((cliente) => (
               <tr key={cliente.id}>
-                <td><strong>{cliente.name || cliente.nome}</strong></td>
+                <td><strong>{cliente.nome || cliente.name}</strong></td>
                 <td>{cliente.email}</td>
                 <td>
                   <span className={`badge ${cliente.tipo === 'admin' ? 'badge-danger' : 'badge-info'}`}>

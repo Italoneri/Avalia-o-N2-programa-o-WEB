@@ -1,40 +1,35 @@
-const CLIENTES_KEY = "petco_users";
+import { supabase } from "./supabaseClient";
 
-export function getClientes() {
-  const clientes = localStorage.getItem(CLIENTES_KEY);
-  return clientes ? JSON.parse(clientes) : [];
+export async function getClientes() {
+  const { data, error } = await supabase.from('usuarios').select('*');
+  if (error) { console.error("Erro usuarios:", error); return []; }
+  return data;
 }
 
-export function getClienteById(id) {
-  const clientes = getClientes();
-  // Compara como string caso o ID original do login não exista
-  return clientes.find(c => String(c.id) === String(id));
+export async function getClienteById(id) {
+  const { data, error } = await supabase.from('usuarios').select('*').eq('id', id).single();
+  if (error) return null;
+  return data;
 }
 
-export function saveCliente(clienteData) {
-  const clientes = getClientes();
-  
+export async function saveCliente(clienteData) {
   if (clienteData.id) {
-    // Atualização (Update)
-    const index = clientes.findIndex(c => String(c.id) === String(clienteData.id));
-    if (index !== -1) {
-      clientes[index] = { ...clientes[index], ...clienteData };
-    }
+    await supabase.from('usuarios').update({
+      nome: clienteData.name || clienteData.nome, 
+      email: clienteData.email, 
+      senha: clienteData.password || clienteData.senha, 
+      tipo: clienteData.tipo
+    }).eq('id', clienteData.id);
   } else {
-    // Criação (Create)
-    const novoCliente = { 
-      ...clienteData, 
-      id: Date.now(), // Simula o AUTO_INCREMENT
-      tipo: clienteData.tipo || "cliente"
-    };
-    clientes.push(novoCliente);
+    await supabase.from('usuarios').insert([{
+      nome: clienteData.name || clienteData.nome, 
+      email: clienteData.email, 
+      senha: clienteData.password || clienteData.senha, 
+      tipo: clienteData.tipo || 'cliente'
+    }]);
   }
-  
-  localStorage.setItem(CLIENTES_KEY, JSON.stringify(clientes));
 }
 
-export function deleteCliente(id) {
-  const clientes = getClientes();
-  const filtrados = clientes.filter(c => String(c.id) !== String(id));
-  localStorage.setItem(CLIENTES_KEY, JSON.stringify(filtrados));
+export async function deleteCliente(id) {
+  await supabase.from('usuarios').delete().eq('id', id);
 }

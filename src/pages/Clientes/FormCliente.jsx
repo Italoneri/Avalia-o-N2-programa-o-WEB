@@ -8,19 +8,30 @@ export default function FormCliente() {
   const { id } = useParams();
 
   const [form, setForm] = useState({
-    name: "", // Usando 'name' para ser compatível com o Login atual
+    name: "", 
     email: "",
-    password: "", // O ideal no futuro SQL será 'senha'
+    password: "", 
     tipo: "cliente"
   });
 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (id) {
-      const clienteExistente = getClienteById(id);
-      if (clienteExistente) setForm(clienteExistente);
+    async function carregar() {
+      if (id) {
+        const clienteExistente = await getClienteById(id);
+        if (clienteExistente) {
+          setForm({
+            name: clienteExistente.nome || "",
+            email: clienteExistente.email || "",
+            password: clienteExistente.senha || "",
+            tipo: clienteExistente.tipo || "cliente",
+            id: clienteExistente.id
+          });
+        }
+      }
     }
+    carregar();
   }, [id]);
 
   function validate() {
@@ -37,7 +48,8 @@ export default function FormCliente() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   }
 
-  function handleSubmit(e) {
+  // Adicionado async/await no salvamento
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     
@@ -46,7 +58,7 @@ export default function FormCliente() {
       return;
     }
 
-    saveCliente(form);
+    await saveCliente(form);
     navigate("/clientes");
   }
 
@@ -67,7 +79,6 @@ export default function FormCliente() {
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Ex: João da Silva"
             />
             {errors.name && <div className="invalid-feedback">{errors.name}</div>}
           </div>
@@ -80,7 +91,6 @@ export default function FormCliente() {
               name="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="seu@email.com"
             />
             {errors.email && <div className="invalid-feedback">{errors.email}</div>}
           </div>
@@ -89,7 +99,7 @@ export default function FormCliente() {
             <div className="form-group col-md-6">
               <label>Senha *</label>
               <input
-                type="password" // Oculta a senha visualmente
+                type="password"
                 className={`form-control ${errors.password ? "is-invalid" : ""}`}
                 name="password"
                 value={form.password}
@@ -110,7 +120,7 @@ export default function FormCliente() {
           <div className="d-flex justify-content-between mt-4">
             <Link to="/clientes" className="btn btn-outline-secondary">Cancelar</Link>
             <button type="submit" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
-              Salvar
+              Guardar
             </button>
           </div>
         </form>

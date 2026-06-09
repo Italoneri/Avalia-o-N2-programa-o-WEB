@@ -1,36 +1,29 @@
-const PETS_KEY = "petco_pets";
+import { supabase } from "./supabaseClient";
 
-export function getPets() {
-  const pets = localStorage.getItem(PETS_KEY);
-  return pets ? JSON.parse(pets) : [];
+export async function getPets() {
+  const { data, error } = await supabase.from('pets').select('*');
+  if (error) { console.error("Erro pets:", error); return []; }
+  return data;
 }
 
-export function getPetById(id) {
-  const pets = getPets();
-  return pets.find(pet => pet.id === Number(id));
+export async function getPetById(id) {
+  const { data, error } = await supabase.from('pets').select('*').eq('id', id).single();
+  if (error) return null;
+  return data;
 }
 
-export function savePet(petData) {
-  const pets = getPets();
-  
+export async function savePet(petData) {
   if (petData.id) {
-    const index = pets.findIndex(p => p.id === Number(petData.id));
-    if (index !== -1) {
-      pets[index] = { ...pets[index], ...petData };
-    }
+    await supabase.from('pets').update({
+      nome: petData.nome, raca: petData.raca, idade: petData.idade, porte: petData.porte
+    }).eq('id', petData.id);
   } else {
-    const novoPet = { 
-      ...petData, 
-      id: Date.now()
-    };
-    pets.push(novoPet);
+    await supabase.from('pets').insert([{
+      nome: petData.nome, raca: petData.raca, idade: petData.idade, porte: petData.porte
+    }]);
   }
-  
-  localStorage.setItem(PETS_KEY, JSON.stringify(pets));
 }
 
-export function deletePet(id) {
-  const pets = getPets();
-  const filtrados = pets.filter(pet => pet.id !== Number(id));
-  localStorage.setItem(PETS_KEY, JSON.stringify(filtrados));
+export async function deletePet(id) {
+  await supabase.from('pets').delete().eq('id', id);
 }
