@@ -49,6 +49,17 @@ export default function Painel() {
             </Link>
           </div>
 
+          <div className="card" style={{ transition: "0.2s" }}>
+            <Link to="/adocoes" style={{ textDecoration: "none", color: "inherit", display: "block", height: "100%" }}>
+              <div className="card-body">
+                <h5 className="card-title" style={{ color: "rgb(235, 167, 104)" }}>
+                  👥 Pets e Donos
+                </h5>
+                <p className="card-text">Gerenciar adotantes e seus pets adotados.</p>
+              </div>
+            </Link>
+          </div>
+
         </div>
       </div>
     </>

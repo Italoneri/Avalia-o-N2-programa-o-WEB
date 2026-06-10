@@ -13,6 +13,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Painel from "./pages/Painel";
+import ListarAdocoes from "./pages/Adocoes/ListarAdocoes.jsx";
 
 export default function App() {
   return (
@@ -74,8 +75,12 @@ export default function App() {
             path="/clientes/editar/:id"
             element={<PrivateRoute><FormCliente /></PrivateRoute>}
           />
+          <Route
+            path="/adocoes"
+            element={<PrivateRoute><ListarAdocoes /></PrivateRoute>}
+          />
 
-          {/* Qualquer outra rota vai para o painel (PrivateRoute trata o login) */}
+              {/* Qualquer outra rota vai para o painel (PrivateRoute trata o login) */}
           <Route path="*" element={<Navigate to="/painel" replace />} />
         </Routes>
       </BrowserRouter>

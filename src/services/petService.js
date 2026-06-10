@@ -36,3 +36,40 @@ export async function adotarPet(petId,userId){
 export async function deletePet(id) {
   await supabase.from('pets').delete().eq('id', id);
 }
+
+export async function getAdocoes() {
+  try {
+    const { data, error } = await supabase
+        .from("pets")
+        .select(`
+        id,
+        nome,
+        dono_id,
+        usuarios!inner (
+          id,
+          nome
+        )
+      `)
+        .not("dono_id", "is", null);
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Erro ao buscar adoções:", error);
+    return [];
+  }
+}
+export async function desfazerAdocao(petId) {
+  try {
+    const {data, error} = await supabase
+        .from("pets")
+        .update({dono_id: null})
+        .eq("id", petId);
+
+    if (error) throw error;
+    return {success: true};
+  } catch (error) {
+    console.error("Erro ao desfazer adoção:", error);
+    return {success: false, error};
+  }
+}
