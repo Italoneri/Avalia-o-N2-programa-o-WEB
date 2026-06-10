@@ -31,23 +31,32 @@ export default function Login() {
     setServerError("");
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
     }
+
     setLoading(true);
-    setTimeout(() => {
-      const result = login(form.email, form.password);
-      if (result.success) {
-        navigate("/painel");
-      } else {
-        setServerError(result.message);
-      }
+
+    try {
+      const result = await login(form.email, form.password);
+
+      setTimeout(() => {
+        if (result.success) {
+          navigate("/painel");
+        } else {
+          setServerError(result.message);
+        }
+        setLoading(false);
+      }, 500);
+
+    } catch (error) {
+      setServerError("Ocorreu um erro inesperado ao tentar fazer login.");
       setLoading(false);
-    }, 500);
+    }
   }
 
   return (
@@ -148,7 +157,7 @@ export default function Login() {
       </form>
 
       <p style={{ textAlign: "center", color: "#bbb", fontSize: "0.78rem", marginTop: "1rem" }}>
-        Conta padrão: <strong>admin@petco.com</strong> / <strong>123456</strong>
+        Conta admin: <strong>admin@petco.com</strong> / <strong>123456</strong>
       </p>
     </>
   );

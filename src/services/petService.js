@@ -24,6 +24,15 @@ export async function savePet(petData) {
   }
 }
 
+export async function adotarPet(petId,userId){
+  console.log(userId)
+  if (petId && userId){
+  await supabase.from('pets').update({
+    dono_id: userId
+  }).eq('id', petId);
+  }
+}
+
 export async function deletePet(id) {
   await supabase.from('pets').delete().eq('id', id);
 }

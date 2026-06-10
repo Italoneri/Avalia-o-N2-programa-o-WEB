@@ -15,16 +15,16 @@ export async function getClienteById(id) {
 export async function saveCliente(clienteData) {
   if (clienteData.id) {
     await supabase.from('usuarios').update({
-      nome: clienteData.name || clienteData.nome, 
+      nome: clienteData.name || clienteData.nome,
       email: clienteData.email, 
-      senha: clienteData.password || clienteData.senha, 
+      senha: clienteData.password || clienteData.senha,
       tipo: clienteData.tipo
     }).eq('id', clienteData.id);
   } else {
     await supabase.from('usuarios').insert([{
-      nome: clienteData.name || clienteData.nome, 
+      nome: clienteData.name || clienteData.nome,
       email: clienteData.email, 
-      senha: clienteData.password || clienteData.senha, 
+      senha: clienteData.password || clienteData.senha,
       tipo: clienteData.tipo || 'cliente'
     }]);
   }
