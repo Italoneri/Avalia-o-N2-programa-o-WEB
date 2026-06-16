@@ -80,7 +80,7 @@ export default function Navbar() {
         {user && (
           <div className="d-flex align-items-center">
             <span className="text-muted mr-2" style={{ fontSize: "0.9rem" }}>
-              Olá, {user.name}
+              Olá, {user.nome}
             </span>
             <button
               type="button"

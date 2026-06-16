@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
       const found = users[0];
 
       if (found.senha === senha) {
-        const userData = { id: found.id, name: found.name, email: found.email, tipo: found.tipo };
+        const userData = { id: found.id, nome: found.nome, email: found.email, tipo: found.tipo };
 
         setUser(userData);
         cookieService.set(KEY_SESSION, userData);
