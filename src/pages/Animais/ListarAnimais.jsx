@@ -7,6 +7,7 @@ import {useAuth} from "../../context/AuthContext.jsx";
 export default function ListarAnimais() {
   const [pets, setPets] = useState([]);
   const { user } = useAuth();
+  const isAdmin = user?.tipo === "admin";
 
   useEffect(() => {
     carregarPets();
@@ -49,9 +50,11 @@ export default function ListarAnimais() {
       <div className="container mt-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 style={{ color: "rgb(235, 167, 104)" }}>Gerenciar Animais</h2>
-          <Link to="/animais/novo" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
-            + Novo Animal
-          </Link>
+          {isAdmin && (
+            <Link to="/animais/novo" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
+              + Novo Animal
+            </Link>
+          )}
         </div>
 
         {pets.length === 0 ? (
@@ -77,17 +80,21 @@ export default function ListarAnimais() {
                   <td>{pet.idade}</td>
                   <td>{pet.porte}</td>
                   <td>
-                    <Link to={`/animais/editar/${pet.id}`} className="btn btn-sm btn-outline-secondary mr-2">
-                      Editar
-                    </Link>
-                    {!pet.dono_id && (
-                        <button onClick={() => handleAdotarPet(pet.id)} className="btn btn-sm btn-outline-warning mr-2">
-                          Adotar
-                        </button>
+                    {isAdmin && (
+                      <Link to={`/animais/editar/${pet.id}`} className="btn btn-sm btn-outline-secondary mr-2">
+                        Editar
+                      </Link>
                     )}
-                    <button onClick={() => handleDelete(pet.id)} className="btn btn-sm btn-outline-danger">
-                      Excluir
-                    </button>
+                    {!pet.dono_id && (
+                      <button onClick={() => handleAdotarPet(pet.id)} className="btn btn-sm btn-outline-warning mr-2">
+                        Adotar
+                      </button>
+                    )}
+                    {isAdmin && (
+                      <button onClick={() => handleDelete(pet.id)} className="btn btn-sm btn-outline-danger">
+                        Excluir
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

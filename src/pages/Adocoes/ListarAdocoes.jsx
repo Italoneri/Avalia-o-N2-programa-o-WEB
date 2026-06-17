@@ -3,11 +3,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import {desfazerAdocao, getAdocoes} from "../../services/petService.js";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function ListarAdocoes() {
 
   const [adocoes, setAdocoes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const isAdmin = user?.tipo === "admin";
 
   useEffect(() => {
     carregarAdocoes();
@@ -62,12 +65,14 @@ export default function ListarAdocoes() {
                         <Link to={`/animais/editar/${pet.id}`} className="btn btn-sm btn-outline-info mr-2">
                           Ver Pet
                         </Link>
-                        <button
-                            onClick={() => handleCancelarAdocao(pet.id)}
-                            className="btn btn-sm btn-outline-danger"
-                        >
-                          Cancelar Adoção
-                        </button>
+                        {isAdmin && (
+                          <button
+                              onClick={() => handleCancelarAdocao(pet.id)}
+                              className="btn btn-sm btn-outline-danger"
+                          >
+                            Cancelar Adoção
+                          </button>
+                        )}
                       </td>
                     </tr>
                 ))}

@@ -29,3 +29,10 @@ export async function saveProduto(produtoData) {
 export async function deleteProduto(id) {
   await supabase.from('produtos').delete().eq('id', id);
 }
+
+export async function comprarProduto(id, estoqueAtual) {
+  if (estoqueAtual <= 0) return { success: false, message: "Produto sem estoque." };
+  const { error } = await supabase.from('produtos').update({ estoque: estoqueAtual - 1 }).eq('id', id);
+  if (error) return { success: false };
+  return { success: true };
+}

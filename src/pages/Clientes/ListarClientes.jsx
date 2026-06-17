@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { getClientes, deleteCliente } from "../../services/clienteService";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ListarClientes() {
   const [clientes, setClientes] = useState([]);
+  const { user } = useAuth();
+  const isAdmin = user?.tipo === "admin";
 
   useEffect(() => {
     carregarClientes();
@@ -38,9 +41,11 @@ export default function ListarClientes() {
       <div className="container mt-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 style={{ color: "rgb(235, 167, 104)" }}>Gerenciar Clientes / Usuários</h2>
-          <Link to="/clientes/novo" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
-            + Novo Usuário
-          </Link>
+          {isAdmin && (
+            <Link to="/clientes/novo" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
+              + Novo Usuário
+            </Link>
+          )}
         </div>
 
         <table className="table table-hover shadow-sm bg-white">
@@ -63,7 +68,7 @@ export default function ListarClientes() {
                   </span>
                 </td>
                 <td className="text-right">
-                  {!String(cliente.id).includes("padrao") && (
+                  {isAdmin && !String(cliente.id).includes("padrao") && (
                     <>
                       <Link to={`/clientes/editar/${cliente.id}`} className="btn btn-sm btn-outline-secondary mr-2">
                         Editar

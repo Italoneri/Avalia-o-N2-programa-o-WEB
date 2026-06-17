@@ -38,47 +38,28 @@ export default function Navbar() {
       </button>
 
       <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-            >
-              institucional
-            </a>
-            <div className="dropdown-menu">
-              <a className="dropdown-item" href="#">Sobre nós</a>
-              <a className="dropdown-item" href="#">Projetos sociais</a>
-            </div>
-          </li>
-
-          <li className="nav-item">
-            <a className="nav-link" href="#">Ongs parceiras</a>
-          </li>
-
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-toggle="dropdown"
-            >
-              FAQ
-            </a>
-            <div className="dropdown-menu">
-              <a className="dropdown-item" href="#">Como ajudar</a>
-            </div>
-          </li>
-        </ul>
-
-        <a href="/animais"><button type="button" className="btn btn-outline-info mr-1">Quero adotar</button></a>
-        <a href="/clientes"><button type="button" className="btn btn-outline-warning mr-2">Seja voluntário</button></a>
+        {user && (
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <a className="nav-link" href="/animais">Animais</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/clientes">Clientes</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/produtos">Produtos</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/adocoes">Pets e Donos</a>
+            </li>
+          </ul>
+        )}
 
         {user && (
           <div className="d-flex align-items-center">
+            <a href="/animais" className="mr-2">
+              <button type="button" className="btn btn-outline-info btn-sm">Quero adotar</button>
+            </a>
             <span className="text-muted mr-2" style={{ fontSize: "0.9rem" }}>
               Olá, {user.nome}
             </span>

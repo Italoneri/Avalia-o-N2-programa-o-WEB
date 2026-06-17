@@ -68,7 +68,7 @@ export function AuthProvider({ children }) {
               nome: name.trim(),
               email: email.trim().toLowerCase(),
               senha: password,
-              tipo: "user"
+              tipo: "cliente"
             }
           ])
           .select();

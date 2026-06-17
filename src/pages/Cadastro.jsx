@@ -64,19 +64,6 @@ export default function Cadastro() {
             <div style={{ fontSize: "0.62rem", color: "#888", textTransform: "uppercase", letterSpacing: "0.3px" }}>Adoção responsável</div>
           </div>
         </a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCad">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarCad">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown">institucional</a>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#">Sobre nós</a>
-              </div>
-            </li>
-          </ul>
-        </div>
       </nav>
 
       {/* Formulário de Cadastro */}

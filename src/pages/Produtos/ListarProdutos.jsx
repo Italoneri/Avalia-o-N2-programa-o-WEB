@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import CardProduto from "../../components/CardProduto";
-import { getProdutos, deleteProduto } from "../../services/produtoService";
+import { getProdutos, deleteProduto, comprarProduto } from "../../services/produtoService";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ListarProdutos() {
   const [produtos, setProdutos] = useState([]);
+  const { user } = useAuth();
+  const isAdmin = user?.tipo === "admin";
 
   useEffect(() => {
     carregarProdutos();
@@ -23,15 +26,23 @@ export default function ListarProdutos() {
     }
   }
 
+  async function handleCompra(id, estoqueAtual) {
+    const result = await comprarProduto(id, estoqueAtual);
+    if (result.success) await carregarProdutos();
+    else alert(result.message || "Erro ao comprar produto.");
+  }
+
   return (
     <>
       <Navbar />
       <div className="container mt-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 style={{ color: "rgb(235, 167, 104)" }}>Catálogo de Produtos</h2>
-          <Link to="/produtos/novo" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
-            + Novo Produto
-          </Link>
+          {isAdmin && (
+            <Link to="/produtos/novo" className="btn text-white" style={{ backgroundColor: "rgb(235, 167, 104)" }}>
+              + Novo Produto
+            </Link>
+          )}
         </div>
 
         {produtos.length === 0 ? (
@@ -39,10 +50,12 @@ export default function ListarProdutos() {
         ) : (
           <div className="row">
             {produtos.map((produto) => (
-              <CardProduto 
-                key={produto.id} 
-                produto={produto} 
-                onDelete={handleDelete} 
+              <CardProduto
+                key={produto.id}
+                produto={produto}
+                onDelete={handleDelete}
+                onCompra={handleCompra}
+                isAdmin={isAdmin}
               />
             ))}
           </div>
