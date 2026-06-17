@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Painel from "./pages/Painel";
 import ListarAdocoes from "./pages/Adocoes/ListarAdocoes.jsx";
+import RelatorioPetDono from "./pages/RelatorioPetDono";
 
 export default function App() {
   return (
@@ -81,6 +82,16 @@ export default function App() {
           />
 
               {/* Qualquer outra rota vai para o painel (PrivateRoute trata o login) */}
+          <Route
+            path="/relatorio"
+            element={
+               <PrivateRoute>
+                  <RelatorioPetDono />
+              </PrivateRoute>
+           }
+         />
+
+          {/* Qualquer outra rota vai para o painel (PrivateRoute trata o login) */}
           <Route path="*" element={<Navigate to="/painel" replace />} />
         </Routes>
       </BrowserRouter>
