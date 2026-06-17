@@ -42,14 +42,19 @@ export async function getAdocoes() {
     const { data, error } = await supabase
         .from("pets")
         .select(`
-        id,
-        nome,
-        dono_id,
-        usuarios!inner (
           id,
-          nome
-        )
-      `)
+          nome,
+          dono_id,
+          raca,          
+          idade,         
+          porte,         
+          usuarios!inner (
+            id,
+            nome,
+            email,       
+            tipo         
+          )
+        `)
         .not("dono_id", "is", null);
 
     if (error) throw error;
