@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function RelatorioPets() {
+export default function RelatorioPetDono() {
   const usuarios = [
     {
       id: 1,
