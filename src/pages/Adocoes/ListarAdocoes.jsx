@@ -59,8 +59,8 @@ export default function ListarAdocoes() {
                     </span>
                       </td>
                       <td className="text-right">
-                        <Link to={`/animais/editar/${pet.id}`} className="btn btn-sm btn-outline-info mr-2">
-                          Ver Pet
+                        <Link to={`/adocoes/${pet.id}`} className="btn btn-sm btn-outline-info mr-2">
+                          Ver detalhes
                         </Link>
                         <button
                             onClick={() => handleCancelarAdocao(pet.id)}
