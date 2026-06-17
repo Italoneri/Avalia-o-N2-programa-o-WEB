@@ -37,17 +37,15 @@ export default function Cadastro() {
     setServerError("");
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setLoading(true);
-    setTimeout(() => {
-      const result = register(form.name, form.email, form.password);
-      if (result.success) navigate("/painel");
-      else setServerError(result.message);
-      setLoading(false);
-    }, 500);
+    const result = await register(form.name, form.email, form.password);
+    if (result.success) navigate("/painel");
+    else setServerError(result.message);
+    setLoading(false);
   }
 
   return (

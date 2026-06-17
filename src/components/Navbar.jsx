@@ -82,6 +82,11 @@ export default function Navbar() {
             <span className="text-muted mr-2" style={{ fontSize: "0.9rem" }}>
               Olá, {user.nome}
             </span>
+            <a href="/painel">
+              <button type="button" className="btn btn-outline-secondary btn-sm mr-2">
+                Painel
+              </button>
+            </a>
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm"

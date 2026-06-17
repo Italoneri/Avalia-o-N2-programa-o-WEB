@@ -65,9 +65,10 @@ export function AuthProvider({ children }) {
           .from("usuarios")
           .insert([
             {
-              name: name.trim(),
+              nome: name.trim(),
               email: email.trim().toLowerCase(),
-              password: password
+              senha: password,
+              tipo: "user"
             }
           ])
           .select();
@@ -76,7 +77,7 @@ export function AuthProvider({ children }) {
 
       const newUser = insertedData[0];
 
-      const userData = { id: newUser.id, name: newUser.name, email: newUser.email };
+      const userData = { id: newUser.id, nome: newUser.nome, email: newUser.email, tipo: newUser.tipo };
 
       setUser(userData);
       cookieService.set(KEY_SESSION, userData);
