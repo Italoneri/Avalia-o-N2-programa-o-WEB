@@ -27,6 +27,7 @@ export default function ListarProdutos() {
   }
 
   async function handleCompra(id, estoqueAtual) {
+    if (!window.confirm("Deseja finalizar a compra?")) return;
     const result = await comprarProduto(id, estoqueAtual);
     if (result.success) await carregarProdutos();
     else alert(result.message || "Erro ao comprar produto.");
