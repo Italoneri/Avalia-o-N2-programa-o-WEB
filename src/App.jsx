@@ -13,6 +13,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Painel from "./pages/Painel";
+import AuthCallback from "./pages/AuthCallback";
+import Landing from "./pages/Landing";
 import ListarAdocoes from "./pages/Adocoes/ListarAdocoes.jsx";
 import RelatorioPetDono from "./pages/Adocoes/RelatorioPetDono.jsx";
 
@@ -22,8 +24,10 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           {/* Rotas públicas */}
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Rota protegida do Painel */}
           <Route
@@ -91,8 +95,7 @@ export default function App() {
            }
          />
 
-          {/* Qualquer outra rota vai para o painel (PrivateRoute trata o login) */}
-          <Route path="*" element={<Navigate to="/painel" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
