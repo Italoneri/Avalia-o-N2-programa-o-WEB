@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { supabase } from "../services/supabaseClient";
 
 export default function Login() {
   const { login, loginWithGoogle } = useAuth();
@@ -63,7 +62,7 @@ export default function Login() {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand d-flex align-items-center" href="#" style={{ textDecoration: "none" }}>
+        <a className="navbar-brand d-flex align-items-center" href="/" style={{ textDecoration: "none" }}>
           <div style={{
             width: 42, height: 42, borderRadius: "50%",
             backgroundColor: "rgb(235, 167, 104)",
