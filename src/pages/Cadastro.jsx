@@ -59,7 +59,7 @@ export default function Cadastro() {
     <>
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand d-flex align-items-center" href="#" style={{ textDecoration: "none" }}>
+        <a className="navbar-brand d-flex align-items-center" href="/" style={{ textDecoration: "none" }}>
           <div style={{
             width: 42, height: 42, borderRadius: "50%",
             backgroundColor: "rgb(235, 167, 104)",
