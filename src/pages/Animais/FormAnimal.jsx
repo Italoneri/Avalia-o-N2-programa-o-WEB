@@ -94,12 +94,12 @@ export default function FormAnimal() {
             <div className="form-group col-md-6">
               <label>Idade</label>
               <input
-                type="text"
+                type="number"
                 className="form-control"
                 name="idade"
                 value={form.idade}
                 onChange={handleChange}
-                placeholder="Ex: 2 anos, 5 meses..."
+                placeholder="Ex: 2 meses, 12 meses..."
                 disabled={readOnly}
               />
             </div>

@@ -5,7 +5,18 @@ export async function getPets() {
   if (error) { console.error("Erro pets:", error); return []; }
   return data;
 }
+export async function getPetsSemDono() {
+  const { data, error } = await supabase
+      .from('pets')
+      .select('*')
+      .is('dono_id', null);
 
+  if (error) {
+    console.error("Erro pets:", error);
+    return [];
+  }
+  return data;
+}
 export async function getPetById(id) {
   const { data, error } = await supabase.from('pets').select('*').eq('id', id).single();
   if (error) return null;

@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getPetsSemDono } from "../services/petService.js";
 
 const LARANJA = "rgb(235, 167, 104)";
 
@@ -20,23 +22,6 @@ const adocoes = [
   },
 ];
 
-const pets = [
-  {
-    img: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop",
-    nome: "Rex",
-    descricao: "Golden Retriever, 2 anos, brincalhão e cheio de energia.",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=300&fit=crop",
-    nome: "Mia",
-    descricao: "Gata laranja, 1 ano, carinhosa e independente.",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=400&h=300&fit=crop",
-    nome: "Bolinha",
-    descricao: "Vira-lata caramelo, 3 anos, dócil e vacinado.",
-  },
-];
 
 const depoimentos = [
   {
@@ -53,7 +38,32 @@ const depoimentos = [
   },
 ];
 
+const IMAGENS_PADRAO = [
+  "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop", // Foto do Rex
+  "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=300&fit=crop", // Foto da Mia
+  "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=400&h=300&fit=crop"  // Foto do Bolinha
+];
+
 export default function Landing() {
+
+  const [pets, setPets] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    async function carregarPets() {
+      try {
+        const dadosDoBanco = await getPetsSemDono();
+        setPets(dadosDoBanco);
+      } catch (error) {
+        console.error("Erro ao carregar os pets:", error);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarPets();
+  }, []);
+
   return (
     <div style={{ overflowX: "hidden" }}>
 
@@ -174,29 +184,51 @@ export default function Landing() {
           <p style={{ textAlign: "center", color: "#888", marginBottom: 48 }}>
             Conheça alguns dos nossos amiguinhos disponíveis para adoção.
           </p>
+
           <div className="row">
-            {pets.map((pet) => (
-              <div className="col-md-4 mb-4" key={pet.nome}>
-                <div style={{
-                  borderRadius: 20, overflow: "hidden", backgroundColor: "#fff",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)", height: "100%",
-                }}>
-                  <img src={pet.img} alt={pet.nome} style={{ width: "100%", height: 220, objectFit: "cover" }} />
-                  <div style={{ padding: "20px 24px 28px" }}>
-                    <h5 style={{ fontWeight: 700, color: "#2d2d2d", marginBottom: 6 }}>{pet.nome}</h5>
-                    <p style={{ color: "#777", margin: 0, lineHeight: 1.6 }}>{pet.descricao}</p>
-                    <Link to="/cadastro" style={{
-                      display: "inline-block", marginTop: 16,
-                      backgroundColor: LARANJA, color: "#fff",
-                      borderRadius: 20, padding: "6px 20px", fontSize: "0.85rem", fontWeight: 600,
-                      textDecoration: "none",
-                    }}>
-                      Quero adotar
-                    </Link>
-                  </div>
+            {carregando ? (
+                <div className="col-12 text-center">
+                  <p style={{ color: "#888", fontSize: "1.2rem" }}>Carregando amiguinhos...</p>
                 </div>
-              </div>
-            ))}
+            ) : pets.length === 0 ? (
+                <div className="col-12 text-center">
+                  <p style={{ color: "#888", fontSize: "1.2rem" }}>Nenhum pet para adotar disponível no momento. 🐾</p>
+                </div>
+            ) : (
+                pets.map((pet, index) => (
+                    <div className="col-md-4 mb-4" key={pet.id}>
+                      <div style={{
+                        borderRadius: 20, overflow: "hidden", backgroundColor: "#fff",
+                        boxShadow: "0 4px 20px rgba(0,0,0,0.08)", height: "100%",
+                      }}>
+
+                        <img
+                            src={pet.img || IMAGENS_PADRAO[index % IMAGENS_PADRAO.length]}
+                            alt={pet.nome}
+                            style={{ width: "100%", height: 220, objectFit: "cover" }}
+                        />
+                        <div style={{ padding: "20px 24px 28px" }}>
+                          <h5 style={{ fontWeight: 700, color: "#2d2d2d", marginBottom: 6 }}>{pet.nome}</h5>
+
+                          <p style={{ color: "#777", margin: 0, lineHeight: 1.6, fontSize: "0.95rem" }}>
+                            <strong>Raça:</strong> {pet.raca} <br />
+                            <strong>Idade:</strong> {pet.idade} {pet.idade === 1 ? 'mês' : 'meses'} <br />
+                            <strong>Porte:</strong> {pet.porte}
+                          </p>
+
+                          <Link to="/cadastro" style={{
+                            display: "inline-block", marginTop: 16,
+                            backgroundColor: LARANJA, color: "#fff",
+                            borderRadius: 20, padding: "6px 20px", fontSize: "0.85rem", fontWeight: 600,
+                            textDecoration: "none",
+                          }}>
+                            Quero adotar
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                ))
+            )}
           </div>
         </div>
       </section>
